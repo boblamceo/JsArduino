@@ -1,5 +1,24 @@
 {
+  "name": "jsarduino",
+  "version": "1.0.0",
+  "description": "",
+  "main": "strobe.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boblamceo/JsArduino.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boblamceo/JsArduino/issues"
+  },
+  "homepage": "https://github.com/boblamceo/JsArduino#readme",
   "dependencies": {
-    "johnny-five": "^2.1.0"
+    "johnny-five": "^2.1.0",
+    "live-server": "^1.2.2",
+    "serialport": "^10.0.0"
   }
 }

@@ -1,10 +1,8 @@
-var five = require("johnny-five"),
-    board = new five.Board();
+const { Board, Led } = require("johnny-five");
+const board = new Board();
 
-board.on("ready", function () {
-    // Create an Led on pin 13
-    var led = new five.Led(13);
+board.on("ready", () => {
+    const led = new Led(13);
 
-    // Strobe the pin on/off, defaults to 100ms phases
-    led.strobe();
+    led.blink(500);
 });
