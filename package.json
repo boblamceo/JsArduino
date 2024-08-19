@@ -17,8 +17,6 @@
   },
   "homepage": "https://github.com/boblamceo/JsArduino#readme",
   "dependencies": {
-    "johnny-five": "^2.1.0",
-    "live-server": "^1.2.2",
-    "serialport": "^10.0.0"
+    "johnny-five": "^2.1.0"
   }
 }
