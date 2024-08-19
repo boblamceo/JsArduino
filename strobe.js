@@ -1,9 +1,11 @@
 const { Board, Led } = require("johnny-five");
-const board = new Board({
-    port: "COM14", // Check if is your Arduino on this port (this you can make in Arduino IDE)
-});
+const board = new Board({ port: "COM14" });
 
 board.on("ready", () => {
-    const led = new Led(3);
+    // Create a standard `led` component instance
+    const led = new Led(13);
+
+    // "blink" the led in 500ms
+    // on-off phase periods
     led.blink(500);
 });
