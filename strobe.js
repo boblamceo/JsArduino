@@ -14,23 +14,17 @@ board.on("ready", () => {
     });
     console.log("hi");
     imu.on("data", function () {
+        console.log("yup");
         let data = `${this.accelerometer.x} ${this.accelerometer.y} ${this.accelerometer.z} ${this.accelerometer.pitch} ${this.accelerometer.roll} ${this.accelerometer.acceleration} ${this.accelerometer.inclination} ${this.accelerometer.orientation} ${this.gyro.x} ${this.gyro.y} ${this.gyro.z}`;
 
-        stream.write(`${data}\r\n`);
-    });
-    button.on("down", function () {
-        console.log("down");
-    });
-
-    // "hold" the button is pressed for specified time.
-    //        defaults to 500ms (1/2 second)
-    //        set
-    button.on("hold", function () {
-        console.log("hold");
+        button.on("hold", function () {
+            console.log("hi");
+            stream.write(`${data}\r\n`);
+        });
     });
 
-    // "up" the button is released
     button.on("up", function () {
         console.log("up");
+        stream.end();
     });
 });
