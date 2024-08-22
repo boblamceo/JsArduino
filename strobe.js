@@ -18,7 +18,6 @@ board.on("ready", () => {
         let data = `${this.accelerometer.x} ${this.accelerometer.y} ${this.accelerometer.z} ${this.accelerometer.pitch} ${this.accelerometer.roll} ${this.accelerometer.acceleration} ${this.accelerometer.inclination} ${this.accelerometer.orientation} ${this.gyro.x} ${this.gyro.y} ${this.gyro.z}`;
 
         button.on("hold", function () {
-            console.log("hi");
             stream.write(`${data}\r\n`);
         });
     });
