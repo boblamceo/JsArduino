@@ -1,29 +1,51 @@
-const { Board, IMU, Button } = require("johnny-five");
-const board = new Board({ port: "COM14" });
+const five = require("johnny-five");
 const fs = require("fs");
-board.on("ready", () => {
-    const button = new Button({ pin: 2, invert: true });
-    const imu = new IMU({
+
+let gestureType;
+let stream, sampleNumber;
+let previousSampleNumber;
+
+const board = new five.Board({ port: "COM14" });
+board.on("ready", function () {
+    console.log("Board ready!");
+    const button = new five.Button({ pin: 2, invert: true });
+
+    process.argv.forEach(function (val, index, array) {
+        gestureType = array[2];
+        sampleNumber = parseInt(array[3]);
+        previousSampleNumber = sampleNumber;
+    });
+
+    stream = fs.createWriteStream(
+        `data/sample_${gestureType}_${sampleNumber}.txt`,
+        { flags: "a" }
+    );
+
+    const imu = new five.IMU({
         controller: "MPU6050",
     });
-    let stream = fs.createWriteStream(`data/sample_punch_0.txt`, {
-        flags: "a",
-    });
-    board.repl.inject({
-        button: button,
-    });
-    console.log("hi");
+
     imu.on("data", function () {
-        console.log("yup");
+        console.log("good now");
         let data = `${this.accelerometer.x} ${this.accelerometer.y} ${this.accelerometer.z} ${this.accelerometer.pitch} ${this.accelerometer.roll} ${this.accelerometer.acceleration} ${this.accelerometer.inclination} ${this.accelerometer.orientation} ${this.gyro.x} ${this.gyro.y} ${this.gyro.z}`;
 
         button.on("hold", function () {
+            if (sampleNumber !== previousSampleNumber) {
+                stream = fs.createWriteStream(
+                    `./data/game/sample_${gestureType}_${sampleNumber}.txt`,
+                    { flags: "a" }
+                );
+            }
             stream.write(`${data}\r\n`);
         });
     });
 
-    button.on("up", function () {
-        console.log("up");
+    button.on("release", function () {
         stream.end();
+        sampleNumber += 1;
     });
+});
+
+board.on("close", function () {
+    console.log("Board disconnected");
 });
