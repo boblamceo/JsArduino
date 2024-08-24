@@ -14,7 +14,8 @@ let totalNumDataPerFile = numPointsOfData * numLinesPerFile;
 
 function readFile(file) {
     let allFileData = [];
-    console.log(file === "sample_violin_10");
+
+    console.log(file === "sample_violin_10.txt");
     return new Promise((resolve, reject) => {
         fs.readFile(`data/${file}`, "utf8", (err, data) => {
             if (err) {
@@ -29,6 +30,9 @@ function readFile(file) {
                     if (concatArray.length >= totalNumDataPerFile) {
                         let label = file.split("_")[1];
                         let labelIndex = gestureClasses.indexOf(label);
+                        if (file === "sample_violin_10.txt") {
+                            console.log(file === "sample_violin_10.txt");
+                        }
                         resolve({ features: concatArray, label: labelIndex });
                     }
                 });
