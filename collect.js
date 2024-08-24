@@ -32,7 +32,7 @@ board.on("ready", function () {
         button.on("hold", function () {
             if (sampleNumber !== previousSampleNumber) {
                 stream = fs.createWriteStream(
-                    `./data/game/sample_${gestureType}_${sampleNumber}.txt`,
+                    `./data/sample_${gestureType}_${sampleNumber}.txt`,
                     { flags: "a" }
                 );
             }

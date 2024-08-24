@@ -18,14 +18,13 @@ function readFile(file) {
             if (err) {
                 reject(err);
             } else {
-                lineReader.eachLine(`./data/game/${file}`, function (line) {
+                lineReader.eachLine(`./data/${file}`, function (line) {
                     let dataArray = line
                         .split(" ")
                         .map((arrayItem) => parseFloat(arrayItem));
                     allFileData.push(...dataArray);
                     let concatArray = [...allFileData];
-
-                    if (concatArray.length === totalNumDataPerFile) {
+                    if (concatArray.length > totalNumDataPerFile) {
                         let label = file.split("_")[1];
                         let labelIndex = gestureClasses.indexOf(label);
                         resolve({ features: concatArray, label: labelIndex });
@@ -38,7 +37,7 @@ function readFile(file) {
 
 const readDir = () =>
     new Promise((resolve, reject) =>
-        fs.readdir(`/data`, "utf8", (err, data) =>
+        fs.readdir(`data`, "utf8", (err, data) =>
             err ? reject(err) : resolve(data)
         )
     );
@@ -49,9 +48,11 @@ const readDir = () =>
     filenames.map(async (file) => {
         // 75 times
         let originalContent = await readFile(file);
+        console.log(originalContent);
         allData.push(originalContent);
         if (allData.length === totalNumDataFiles) {
             format(allData);
         }
     });
+    console.log(allData);
 })();
