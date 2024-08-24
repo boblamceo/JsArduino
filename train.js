@@ -14,7 +14,7 @@ let totalNumDataPerFile = numPointsOfData * numLinesPerFile;
 
 function readFile(file) {
     let allFileData = [];
-
+    console.log(file === "sample_violin_10");
     return new Promise((resolve, reject) => {
         fs.readFile(`data/${file}`, "utf8", (err, data) => {
             if (err) {
@@ -49,15 +49,15 @@ const readDir = () =>
     let allData = [];
     filenames.map(async (file) => {
         // 75 times
-        console.log(file);
         let originalContent = await readFile(file);
         allData.push(originalContent);
-        console.log(allData.length);
+        // console.log(allData.map((curr) => curr.label));
+        console.log(file);
+
         if (allData.length >= totalNumDataFiles) {
             format(allData);
         }
     });
-    console.log(justLabels);
 })();
 
 const format = (allData) => {
@@ -67,7 +67,7 @@ const format = (allData) => {
         createMultidimentionalArrays(justLabels, item.label, item.label);
         createMultidimentionalArrays(justFeatures, item.label, item.features);
     });
-
+    console.log(sortedData);
     // const [trainingFeatures, trainingLabels, testingFeatures, testingLabels] =
     //     transformToTensor(justFeatures, justLabels);
 
