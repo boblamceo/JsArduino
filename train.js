@@ -4,6 +4,8 @@ var fs = require("fs");
 const gestureClasses = ["violin", "punch"];
 let numClasses = gestureClasses.length;
 
+let justFeatures = [];
+let justLabels = [];
 let numSamplesPerGesture = 21;
 let totalNumDataFiles = numSamplesPerGesture * numClasses;
 let numPointsOfData = 6;
@@ -24,7 +26,7 @@ function readFile(file) {
                         .map((arrayItem) => parseFloat(arrayItem));
                     allFileData.push(...dataArray);
                     let concatArray = [...allFileData];
-                    if (concatArray.length > totalNumDataPerFile) {
+                    if (concatArray.length >= totalNumDataPerFile) {
                         let label = file.split("_")[1];
                         let labelIndex = gestureClasses.indexOf(label);
                         resolve({ features: concatArray, label: labelIndex });
@@ -48,11 +50,35 @@ const readDir = () =>
     filenames.map(async (file) => {
         // 75 times
         let originalContent = await readFile(file);
-        console.log(originalContent);
         allData.push(originalContent);
-        if (allData.length === totalNumDataFiles) {
+        if (allData.length >= totalNumDataFiles) {
             format(allData);
         }
     });
-    console.log(allData);
+    console.log(justLabels);
 })();
+
+const format = (allData) => {
+    let sortedData = allData.sort((a, b) => (a.label > b.label ? 1 : -1));
+
+    sortedData.map((item) => {
+        createMultidimentionalArrays(justLabels, item.label, item.label);
+        createMultidimentionalArrays(justFeatures, item.label, item.features);
+    });
+
+    // const [trainingFeatures, trainingLabels, testingFeatures, testingLabels] =
+    //     transformToTensor(justFeatures, justLabels);
+
+    // createModel(
+    //     trainingFeatures,
+    //     trainingLabels,
+    //     testingFeatures,
+    //     testingLabels
+    // );
+};
+
+function createMultidimentionalArrays(dataArray, index, item) {
+    !dataArray[index] && dataArray.push([]);
+
+    dataArray[index].push(item);
+}
