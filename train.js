@@ -49,8 +49,10 @@ const readDir = () =>
     let allData = [];
     filenames.map(async (file) => {
         // 75 times
+        console.log(file);
         let originalContent = await readFile(file);
         allData.push(originalContent);
+        console.log(allData.length);
         if (allData.length >= totalNumDataFiles) {
             format(allData);
         }
