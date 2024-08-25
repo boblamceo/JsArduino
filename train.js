@@ -25,7 +25,6 @@ function readFile(file) {
                         .map((arrayItem) => parseFloat(arrayItem));
                     allFileData.push(...dataArray);
                     let concatArray = [...allFileData];
-                    console.log(concatArray.length, totalNumDataPerFile);
                     if (concatArray.length === totalNumDataPerFile) {
                         let label = file.split("_")[1];
                         let labelIndex = gestureClasses.indexOf(label);
@@ -52,9 +51,10 @@ const readDir = () =>
         // 75 times
         let originalContent = await readFile(file);
         allData.push(originalContent);
+        console.log("hi");
+        console.log(allData.length);
         if (allData.length === totalNumDataFiles) {
             format(allData);
-            console.log(allData.length);
         }
     });
 })();
