@@ -68,18 +68,12 @@ const format = (allData) => {
     });
     const [trainingFeatures, trainingLabels, testingFeatures, testingLabels] =
         transformToTensor(justFeatures, justLabels);
-    console.log(
+    createModel(
         trainingFeatures,
         trainingLabels,
         testingFeatures,
         testingLabels
     );
-    // createModel(
-    //     trainingFeatures,
-    //     trainingLabels,
-    //     testingFeatures,
-    //     testingLabels
-    // );
 };
 
 function createMultidimentionalArrays(dataArray, index, item) {
@@ -180,4 +174,34 @@ const split = (featuresTensor, labelsTensor, testSplit) => {
     );
 
     return [trainingFeatures, trainingLabels, testingFeatures, testingLabels];
+};
+
+const createModel = async (xTrain, yTrain, xTest, yTest) => {
+    const params = { learningRate: 0.1, epochs: 40 };
+    // Define the topology of the model: two dense layers.
+    const model = tf.sequential();
+    model.add(
+        tf.layers.dense({
+            units: 10,
+            activation: "sigmoid",
+            inputShape: [xTrain.shape[1]],
+        })
+    );
+    model.add(tf.layers.dense({ units: numClasses, activation: "softmax" }));
+    model.summary();
+
+    const optimizer = tf.train.adam(params.learningRate);
+    model.compile({
+        optimizer: optimizer,
+        loss: "categoricalCrossentropy",
+        metrics: ["accuracy"],
+    });
+
+    await model.fit(xTrain, yTrain, {
+        epochs: params.epochs,
+        validationData: [xTest, yTest],
+    });
+
+    await model.save("file://model");
+    return model;
 };
