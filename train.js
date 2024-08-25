@@ -1,7 +1,6 @@
 const lineReader = require("line-reader");
 var fs = require("fs");
-const tf = require("@tensorflow/tfjs");
-require("@tensorflow/tfjs-node");
+const tf = require("@tensorflow/tfjs-node");
 
 const gestureClasses = ["violin", "punch"];
 let numClasses = gestureClasses.length;
@@ -27,7 +26,7 @@ function readFile(file) {
                         .map((arrayItem) => parseFloat(arrayItem));
                     allFileData.push(...dataArray);
                     let concatArray = [...allFileData];
-                    if (concatArray.length >= totalNumDataPerFile) {
+                    if (concatArray.length === totalNumDataPerFile) {
                         let label = file.split("_")[1];
                         let labelIndex = gestureClasses.indexOf(label);
 
@@ -53,8 +52,8 @@ const readDir = () =>
         // 75 times
         let originalContent = await readFile(file);
         allData.push(originalContent);
-
-        if (allData.length >= totalNumDataFiles) {
+        console.log("hi", allData.length);
+        if (allData.length === totalNumDataFiles) {
             format(allData);
             console.log(allData.length);
         }
