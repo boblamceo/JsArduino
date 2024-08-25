@@ -71,7 +71,7 @@ board.on("ready", function () {
             if (!predictionDone && liveData.length) {
                 predictionDone = true;
                 console.log("yup");
-                // predict(model, liveData);
+                predict(model, liveData);
                 liveData = [];
             }
         });
@@ -79,6 +79,18 @@ board.on("ready", function () {
         started = true;
     });
 });
+
+const predict = (model, newSampleData) => {
+    tf.tidy(() => {
+        const inputData = newSampleData;
+
+        const input = tf.tensor2d([inputData], [1, numValuesExpected]);
+        const predictOut = model.predict(input);
+        const winner = gestureClasses[predictOut.argMax(-1).dataSync()[0]];
+
+        console.log(winner);
+    });
+};
 
 init();
 
