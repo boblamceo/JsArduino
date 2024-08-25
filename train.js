@@ -9,10 +9,9 @@ let justFeatures = [];
 let justLabels = [];
 let numSamplesPerGesture = 21;
 let totalNumDataFiles = numSamplesPerGesture * numClasses;
-let numPointsOfData = 6;
+let numPointsOfData = 11;
 let numLinesPerFile = 50;
 let totalNumDataPerFile = numPointsOfData * numLinesPerFile;
-
 function readFile(file) {
     let allFileData = [];
     return new Promise((resolve, reject) => {
@@ -26,6 +25,7 @@ function readFile(file) {
                         .map((arrayItem) => parseFloat(arrayItem));
                     allFileData.push(...dataArray);
                     let concatArray = [...allFileData];
+                    console.log(concatArray.length, totalNumDataPerFile);
                     if (concatArray.length === totalNumDataPerFile) {
                         let label = file.split("_")[1];
                         let labelIndex = gestureClasses.indexOf(label);
@@ -52,7 +52,6 @@ const readDir = () =>
         // 75 times
         let originalContent = await readFile(file);
         allData.push(originalContent);
-        console.log("hi", allData.length);
         if (allData.length === totalNumDataFiles) {
             format(allData);
             console.log(allData.length);

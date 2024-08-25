@@ -4,6 +4,7 @@ const fs = require("fs");
 let gestureType;
 let stream, sampleNumber;
 let previousSampleNumber;
+let linesCounter;
 
 const board = new five.Board({ port: "COM14" });
 board.on("ready", function () {
@@ -36,13 +37,17 @@ board.on("ready", function () {
                     { flags: "a" }
                 );
             }
-            stream.write(`${data}\r\n`);
+            if (linesCounter < 50) {
+                stream.write(`${data}\r\n`);
+                linesCounter += 1;
+            }
         });
     });
 
     button.on("release", function () {
         stream.end();
         sampleNumber += 1;
+        linesCounter = 0;
     });
 });
 
