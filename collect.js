@@ -37,7 +37,7 @@ board.on("ready", function () {
                     { flags: "a" }
                 );
             }
-            if (linesCounter < 50) {
+            if (linesCounter < 200) {
                 stream.write(`${data}\r\n`);
                 linesCounter += 1;
             }

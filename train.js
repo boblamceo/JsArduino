@@ -10,7 +10,7 @@ let justLabels = [];
 let numSamplesPerGesture = 21;
 let totalNumDataFiles = numSamplesPerGesture * numClasses;
 let numPointsOfData = 11;
-let numLinesPerFile = 50;
+let numLinesPerFile = 200;
 let totalNumDataPerFile = numPointsOfData * numLinesPerFile;
 function readFile(file) {
     let allFileData = [];
@@ -177,7 +177,7 @@ const split = (featuresTensor, labelsTensor, testSplit) => {
 };
 
 const createModel = async (xTrain, yTrain, xTest, yTest) => {
-    const params = { learningRate: 0.1, epochs: 40 };
+    const params = { learningRate: 0.5, epochs: 1000 };
     // Define the topology of the model: two dense layers.
     const model = tf.sequential();
     model.add(

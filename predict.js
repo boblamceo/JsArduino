@@ -1,5 +1,6 @@
 const five = require("johnny-five");
 const tf = require("@tensorflow/tfjs-node");
+let lcd;
 
 let liveData = [];
 let predictionDone = false;
@@ -8,7 +9,7 @@ let model;
 const gestureClasses = ["violin", "punch"];
 
 let numParametersRecorded = 11; // 14 values from Arduino;
-let numLinesPerFile = 50;
+let numLinesPerFile = 200;
 let numValuesExpected = numParametersRecorded * numLinesPerFile;
 
 const init = async () => {
@@ -20,6 +21,11 @@ const board = new five.Board({
 });
 
 board.on("ready", function () {
+    lcd = new five.LCD({
+        pins: [7, 8, 9, 10, 11, 12],
+        rows: 2,
+        cols: 16,
+    });
     console.log("Board ready!");
     const button = new five.Button({ pin: 2, invert: true });
 
@@ -70,7 +76,6 @@ board.on("ready", function () {
         button.on("release", function () {
             if (!predictionDone && liveData.length) {
                 predictionDone = true;
-                console.log("yup");
                 predict(model, liveData);
                 liveData = [];
             }
@@ -88,6 +93,9 @@ const predict = (model, newSampleData) => {
         const predictOut = model.predict(input);
         const winner = gestureClasses[predictOut.argMax(-1).dataSync()[0]];
 
+        lcd.clear();
+        lcd.cursor(0, 0);
+        lcd.print(winner);
         console.log(winner);
     });
 };
