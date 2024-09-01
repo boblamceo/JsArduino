@@ -27,17 +27,17 @@ board.on("ready", function () {
     });
 
     imu.on("data", function () {
-        console.log("good now");
         let data = `${this.accelerometer.x} ${this.accelerometer.y} ${this.accelerometer.z} ${this.accelerometer.pitch} ${this.accelerometer.roll} ${this.accelerometer.acceleration} ${this.accelerometer.inclination} ${this.accelerometer.orientation} ${this.gyro.x} ${this.gyro.y} ${this.gyro.z}`;
 
         button.on("hold", function () {
+            console.log("record now");
             if (sampleNumber !== previousSampleNumber) {
                 stream = fs.createWriteStream(
                     `./data/sample_${gestureType}_${sampleNumber}.txt`,
                     { flags: "a" }
                 );
             }
-            if (linesCounter < 200) {
+            if (linesCounter < 100) {
                 stream.write(`${data}\r\n`);
                 linesCounter += 1;
             }

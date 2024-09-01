@@ -9,7 +9,7 @@ let model;
 const gestureClasses = ["violin", "punch"];
 
 let numParametersRecorded = 11; // 14 values from Arduino;
-let numLinesPerFile = 200;
+let numLinesPerFile = 100;
 let numValuesExpected = numParametersRecorded * numLinesPerFile;
 
 const init = async () => {
